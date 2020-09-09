@@ -7,12 +7,14 @@ const win = Dimensions.get('window');
 export const ImageContainer = styled.View`
   align-items: center;
   flex: 0.95;
+  
 `;
 
 export const LoginImg = styled.Image`
   width: ${win.height * 1.4};
-  height: null;
+  height: 500;
   aspect-ratio: 1;
+  transform: scaleX(0.7) scaleY(0.7);
 `;
 
 export const LoginHeader = styled.Text`
