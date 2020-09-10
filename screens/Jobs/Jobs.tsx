@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View } from 'react-native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { GlobalContext } from '@components/ContextProvider';
@@ -13,6 +13,7 @@ import { StatusController } from '@screens/StatusScreen/StatusController';
 // BWBP
 import { Overlay, CheckBox, Button } from 'react-native-elements';
 import { cloneDeep } from 'lodash';
+import { Modal, TouchableOpacity, Text } from 'react-native';
 
 interface Availability {
   monday: boolean;
@@ -29,6 +30,7 @@ interface JobsScreenState {
   staticHeader: boolean;
   status: Status;
   availability: Availability;
+  visible: boolean;
 }
 
 interface JobsScreenProps {
@@ -64,6 +66,7 @@ export class JobsScreen extends React.Component<JobsScreenProps, JobsScreenState
         thursday: true,
         friday: false,
       },
+      visible: true
     };
   }
 
@@ -138,6 +141,7 @@ export class JobsScreen extends React.Component<JobsScreenProps, JobsScreenState
 
   render() {
     const { monday, tuesday, wednesday, thursday, friday } = this.state.availability;
+
     return (
       <BaseScreen
         title={this.state.title}
@@ -152,6 +156,8 @@ export class JobsScreen extends React.Component<JobsScreenProps, JobsScreenState
           />
         }
       >
+       
+        <Overlay isVisible={this.state.visible}>
         <View>
           <CheckBox
             title="Monday"
@@ -204,10 +210,11 @@ export class JobsScreen extends React.Component<JobsScreenProps, JobsScreenState
             title="Filter Search"
             containerStyle={{ width: '50%' }}
             onPress={(): void => {
-              this.filterJobs(getJobs(), this.state.availability);
+              this.filterJobs(getJobs(), this.state.availability), this.setState({visible: false});
             }}
           />
         </View>
+        </Overlay>
         <StatusController defaultChild={this.renderCards()} status={this.state.status} />
       </BaseScreen>
     );
